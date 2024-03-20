@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  moodle-web-server:
+    restart: always
+    build:
+      context: .
+      dockerfile: moodle.dockerfile
+    container_name: web-server
+    ports:
+      - 80:80
+    volumes:
+      - moodledata:/var/www/moodledata
+    depends_on:
+      - postgresql
+    
+  postgresql:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: moodle
+      POSTGRES_USER: moodle
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  moodledata:
+  pgdata:
